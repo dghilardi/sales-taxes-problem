@@ -25,33 +25,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.ghilardi.salestaxesproblem.entity
+package org.ghilardi.salestaxesproblem.action.impl
 
-import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.ImportDutySalesTaxCalculator
 import org.ghilardi.salestaxesproblem.action.ItemReceiptSerializer
 import java.math.BigDecimal
 
-class ShoppingBasketItem(
-        private val name: String,
-        private val count: Int,
-        private val shelfPrice: BigDecimal,
-        private val basicSalesTaxCalculator: BasicSalesTaxCalculator,
-        private val importDutySalesTaxCalculator: ImportDutySalesTaxCalculator,
-        private val itemReceiptSerializer: ItemReceiptSerializer
-) {
-    fun computeFullTaxes(): BigDecimal {
-        val totShelfPrice = shelfPrice * BigDecimal(count)
-        return basicSalesTaxCalculator.computeBasicSalesTaxFromShelfPrice(totShelfPrice) +
-                importDutySalesTaxCalculator.computeImportDutySalesTaxFromShelfPrice(totShelfPrice)
-    }
-
-    fun computeFullPrice(): BigDecimal {
-        val totShelfPrice = shelfPrice * BigDecimal(count)
-        return totShelfPrice + importDutySalesTaxCalculator.computeImportDutySalesTaxFromShelfPrice(totShelfPrice)
-    }
-
-    fun produceReceiptEntry(): String {
-        return itemReceiptSerializer.produceReceiptEntry(count, name, computeFullPrice())
-    }
+class BaseItemReceiptSerializer: ItemReceiptSerializer {
+    override fun produceReceiptEntry(count: Int, name: String, price: BigDecimal) =
+            "$count $name: $price"
 }

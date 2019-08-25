@@ -35,6 +35,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
 import org.ghilardi.salestaxesproblem.action.ImportDutySalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.ItemReceiptSerializer
 import org.junit.Test
 import java.math.BigDecimal
 import kotlin.test.assertEquals
@@ -55,12 +56,22 @@ class ShoppingBasketItemTests {
         assertEquals(BigDecimal("315.00"), fullTaxes)
     }
 
-    fun givenShoppingBasketItem(
+    @Test
+    fun `Given shopping basket verify receipt item to be produced by the receipt serializer`() {
+        val basketItem = givenShoppingBasketItem(
+                receiptEntry = "1 chocolate bar: 0.85"
+        )
+        val receiptItem = basketItem.produceReceiptEntry()
+        assertEquals("1 chocolate bar: 0.85", receiptItem)
+    }
+
+    private fun givenShoppingBasketItem(
             name: String = "",
             count: Int = 1,
             shelfPrice: BigDecimal = BigDecimal.ZERO,
             basicSalesTax: BigDecimal = BigDecimal.ZERO,
-            importDutySalesTax: BigDecimal = BigDecimal.ZERO
+            importDutySalesTax: BigDecimal = BigDecimal.ZERO,
+            receiptEntry: String = ""
     ): ShoppingBasketItem {
 
         val mockedBasicSalesTaxCalculator = mock<BasicSalesTaxCalculator> {
@@ -71,12 +82,17 @@ class ShoppingBasketItemTests {
             on { computeImportDutySalesTaxFromShelfPrice(any()) } doReturn importDutySalesTax
         }
 
+        val mockedItemReceiptSerializer = mock<ItemReceiptSerializer> {
+            on { produceReceiptEntry(any(), any(), any()) } doReturn receiptEntry
+        }
+
         return ShoppingBasketItem(
                 name = name,
                 count = count,
                 shelfPrice = shelfPrice,
                 basicSalesTaxCalculator = mockedBasicSalesTaxCalculator,
-                importDutySalesTaxCalculator = mockedImportDutySalesTaxCalculator
+                importDutySalesTaxCalculator = mockedImportDutySalesTaxCalculator,
+                itemReceiptSerializer = mockedItemReceiptSerializer
         )
     }
 
