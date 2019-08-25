@@ -25,35 +25,33 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-plugins {
-    // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
-    id("org.jetbrains.kotlin.jvm").version("1.3.31")
+package org.ghilardi.salestaxesproblem.entity
 
-    // Apply the application plugin to add support for building a CLI application.
-    application
-}
+import java.math.BigDecimal
 
-repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-}
+class ShoppingBasket(
+        private val basketItems: List<ShoppingBasketItem>
+) {
+    fun produceReceipt(): String {
+        val itemsReceipt = basketItems
+                .joinToString(separator = "\n") { it.produceReceiptEntry() }
 
-dependencies {
-    // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        val salesTaxes = computeFullSalesTaxes()
+        val totalPrice = computeTotalPrice()
 
-    // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+        return """$itemsReceipt
+            |Sales Taxes: $salesTaxes
+            |Total: $totalPrice
+        """.trimMargin()
+    }
 
-    // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    fun computeFullSalesTaxes(): BigDecimal =
+            basketItems
+                    .map { it.computeFullTaxes() }
+                    .fold(BigDecimal("0.00"), BigDecimal::add)
 
-    testImplementation("org.mockito:mockito-inline:2.13.0")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
-}
-
-application {
-    // Define the main class for the application
-    mainClassName = "org.ghilardi.salestaxesproblem.AppKt"
+    fun computeTotalPrice(): BigDecimal =
+            basketItems
+                    .map { it.computeFullPrice() }
+                    .fold(BigDecimal("0.00"), BigDecimal::add)
 }
