@@ -59,9 +59,7 @@ internal class BasketParserTest {
         assertEquals(1, data.size)
     }
 
-    private fun givenBasketParser(
-            itemType: BasketItemType = BasketItemType.OTHER
-    ): BasketParser {
+    private fun givenBasketParser(): BasketParser {
         val mockedBasketItemParser = mock<BasketItemParser> {
             on { parse(any()) } doReturn ShoppingBasketItemData(
                     name = "MOCK",
