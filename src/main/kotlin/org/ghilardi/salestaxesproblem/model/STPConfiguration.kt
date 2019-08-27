@@ -32,5 +32,6 @@ import java.math.BigDecimal
 data class STPConfiguration(
         val basicSalesTaxRate: BigDecimal,
         val importDutySalesTaxRate: BigDecimal,
+        val roundingStep: BigDecimal,
         val basketItemTypeMap: Map<String, BasketItemType>
 )

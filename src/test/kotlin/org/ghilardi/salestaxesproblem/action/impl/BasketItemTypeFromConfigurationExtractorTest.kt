@@ -53,6 +53,7 @@ internal class BasketItemTypeFromConfigurationExtractorTest {
         val conf = STPConfiguration(
                 basicSalesTaxRate = BigDecimal.ZERO,
                 importDutySalesTaxRate = BigDecimal.ZERO,
+                roundingStep = BigDecimal(".05"),
                 basketItemTypeMap = mapOf(
                         "chocolate bar" to BasketItemType.FOOD,
                         "book" to BasketItemType.BOOK
