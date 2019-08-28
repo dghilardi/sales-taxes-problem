@@ -30,6 +30,8 @@
  */
 package org.ghilardi.salestaxesproblem
 
+import org.ghilardi.salestaxesproblem.context.STPContextBuilder
+
 class App {
     val greeting: String
         get() {
@@ -38,5 +40,21 @@ class App {
 }
 
 fun main(args: Array<String>) {
-    println(App().greeting)
+
+    val contextBuilder = STPContextBuilder()
+    val context = contextBuilder.buildContext()
+
+    val input = generateSequence(::readLine)
+    val lines = input
+            .toList()
+            .joinToString("\n")
+
+    val receipt = context.produceReceiptCommand.produceReceiptFromPlainText(lines)
+
+    print("""INPUT:
+        |$lines
+        |
+        |OUTPUT:
+        |$receipt
+    """.trimMargin())
 }
