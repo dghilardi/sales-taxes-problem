@@ -26,6 +26,8 @@
  */
 
 plugins {
+    java
+
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
     id("org.jetbrains.kotlin.jvm").version("1.3.31")
 
@@ -49,10 +51,29 @@ dependencies {
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
+    testImplementation("org.mockito:mockito-inline:2.13.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 
 application {
     // Define the main class for the application
     mainClassName = "org.ghilardi.salestaxesproblem.AppKt"
+}
+
+
+val fatJar = task("fatJar", type = Jar::class) {
+    baseName = "${project.name}-fat"
+    manifest {
+        attributes["Implementation-Title"] = "Sales Taxes Problem"
+        attributes["Implementation-Version"] = archiveVersion
+        attributes["Main-Class"] = "org.ghilardi.salestaxesproblem.AppKt"
+    }
+    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks.jar.get() as CopySpec)
+}
+
+tasks {
+    "build" {
+        dependsOn(fatJar)
+    }
 }

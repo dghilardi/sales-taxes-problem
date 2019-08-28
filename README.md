@@ -12,7 +12,7 @@ Depending on your operating system open a shell or the command prompt and enter 
 
  * Unix systems
    * build: `./gradlew build`
-   * run: `./gradlew run`
+   * run: `java -jar build/libs/sales-taxes-problem-fat.jar < in/input-1.txt`
  * Windows systems
    * build: `gradlew.bat build`
-   * run: `gradlew.bat run`
+   * run: `java -jar build/libs/sales-taxes-problem-fat.jar < in/input-1.txt`
