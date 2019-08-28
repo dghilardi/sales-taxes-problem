@@ -27,31 +27,20 @@
 
 package org.ghilardi.salestaxesproblem.action.impl
 
-import org.junit.Test
+import org.ghilardi.salestaxesproblem.action.RoundingOperation
 import java.math.BigDecimal
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import java.math.RoundingMode
 
-class TaxExemptImportDutySalesTaxCalculatorTests {
-    @Test
-    fun `Given positive shelfPrice verify tax computation to be 0`() {
-        val importDutyTaxCalculator = TaxExemptImportDutySalesTaxCalculator()
-        val taxes = importDutyTaxCalculator.computeImportDutySalesTaxFromShelfPrice(shelfPrice = BigDecimal("100.00"))
-        assertEquals(BigDecimal("0.00"), taxes)
-    }
 
-    @Test
-    fun `Given zero shelfPrice verify tax computation to be 0`() {
-        val importDutyTaxCalculator = TaxExemptImportDutySalesTaxCalculator()
-        val taxes = importDutyTaxCalculator.computeImportDutySalesTaxFromShelfPrice(shelfPrice = BigDecimal("0.00"))
-        assertEquals(BigDecimal("0.00"), taxes)
-    }
-
-    @Test
-    fun `Given negative shelfPrice basic sales tax computation should fail`() {
-        val importDutyTaxCalculator = TaxExemptImportDutySalesTaxCalculator()
-        assertFailsWith(IllegalArgumentException::class) {
-            importDutyTaxCalculator.computeImportDutySalesTaxFromShelfPrice(shelfPrice = BigDecimal("-10.00"))
+class NearestStepRoundingOperation(
+        private val step: BigDecimal
+): RoundingOperation {
+    override fun round(value: BigDecimal): BigDecimal {
+        return if (step.signum() == 0) {
+            value
+        } else {
+            val divided = value.divide(step, 0, RoundingMode.UP)
+            divided.multiply(step)
         }
     }
 }

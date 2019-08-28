@@ -25,22 +25,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.ghilardi.salestaxesproblem.action.impl
+package org.ghilardi.salestaxesproblem.action
 
-import org.ghilardi.salestaxesproblem.action.RoundingOperation
 import java.math.BigDecimal
-import java.math.RoundingMode
 
-
-class NearestStepRoundingOperation(
-        private val step: BigDecimal
-): RoundingOperation {
-    override fun round(value: BigDecimal): BigDecimal {
-        return if (step.signum() == 0) {
-            value
-        } else {
-            val divided = value.divide(step, 0, RoundingMode.HALF_UP)
-            divided.multiply(step)
-        }
-    }
+interface SalesTaxCalculator {
+    fun computeSalesTaxFromNetPrice(netPrice: BigDecimal): BigDecimal
 }

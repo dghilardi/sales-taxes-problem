@@ -27,12 +27,12 @@
 
 package org.ghilardi.salestaxesproblem.action.impl
 
-import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.SalesTaxCalculator
 import java.math.BigDecimal
 
-class TaxExemptBasicSalesTaxCalculator: BasicSalesTaxCalculator {
-    override fun computeBasicSalesTaxFromShelfPrice(shelfPrice: BigDecimal): BigDecimal {
-        require(shelfPrice >= BigDecimal.ZERO) { "Shelf price must be a non negative number. Given value was $shelfPrice" }
+class TaxExemptSalesTaxCalculator: SalesTaxCalculator {
+    override fun computeSalesTaxFromNetPrice(netPrice: BigDecimal): BigDecimal {
+        require(netPrice >= BigDecimal.ZERO) { "Shelf price must be a non negative number. Given value was $netPrice" }
         return BigDecimal("0.00")
     }
 }

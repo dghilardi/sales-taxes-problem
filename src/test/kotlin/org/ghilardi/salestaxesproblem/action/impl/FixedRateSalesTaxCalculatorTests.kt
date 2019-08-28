@@ -32,32 +32,32 @@ import java.math.BigDecimal
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class FixedRateBasicSalesTaxCalculatorTests {
+class FixedRateSalesTaxCalculatorTests {
     @Test
-    fun `Given positive tax rate and positive shelfPrice verify basic sales tax computation`() {
+    fun `Given positive tax rate and positive netPrice verify basic sales tax computation`() {
         val basicTaxCalculator = givenFixedRateBasicSalesTaxCalculator(taxRate = BigDecimal("10"))
-        val taxes = basicTaxCalculator.computeBasicSalesTaxFromShelfPrice(shelfPrice = BigDecimal("110.00"))
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("100.00"))
         assertEquals(BigDecimal("10.00"), taxes)
     }
 
     @Test
-    fun `Given tax rate of 0% and positive shelfPrice verify basic sales tax to be 0`() {
+    fun `Given tax rate of 0% and positive netPrice verify basic sales tax to be 0`() {
         val basicTaxCalculator = givenFixedRateBasicSalesTaxCalculator(taxRate = BigDecimal.ZERO)
-        val taxes = basicTaxCalculator.computeBasicSalesTaxFromShelfPrice(shelfPrice = BigDecimal("10"))
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("10"))
         assertEquals(BigDecimal("0.00"), taxes)
     }
 
     @Test
-    fun `Given positive tax rate and zero shelfPrice verify basic sales tax to be 0`() {
+    fun `Given positive tax rate and zero netPrice verify basic sales tax to be 0`() {
         val basicTaxCalculator = givenFixedRateBasicSalesTaxCalculator(taxRate = BigDecimal("10"))
-        val taxes = basicTaxCalculator.computeBasicSalesTaxFromShelfPrice(shelfPrice = BigDecimal("0.00"))
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("0.00"))
         assertEquals(BigDecimal("0.00"), taxes)
     }
 
     @Test
-    fun `Given tax rate of 0% and zero shelfPrice verify basic sales tax to be 0`() {
+    fun `Given tax rate of 0% and zero netPrice verify basic sales tax to be 0`() {
         val basicTaxCalculator = givenFixedRateBasicSalesTaxCalculator(taxRate = BigDecimal.ZERO)
-        val taxes = basicTaxCalculator.computeBasicSalesTaxFromShelfPrice(shelfPrice = BigDecimal("0.00"))
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("0.00"))
         assertEquals(BigDecimal("0.00"), taxes)
     }
 
@@ -69,18 +69,18 @@ class FixedRateBasicSalesTaxCalculatorTests {
     }
 
     @Test
-    fun `Given negative shelfPrice basic sales tax computation should fail`() {
+    fun `Given negative netPrice basic sales tax computation should fail`() {
         val basicTaxCalculator = givenFixedRateBasicSalesTaxCalculator(taxRate = BigDecimal("10"))
         assertFailsWith(IllegalArgumentException::class) {
-            basicTaxCalculator.computeBasicSalesTaxFromShelfPrice(shelfPrice = BigDecimal("-10.00"))
+            basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("-10.00"))
         }
     }
 
     private fun givenFixedRateBasicSalesTaxCalculator(
         taxRate: BigDecimal,
         roundingStep: BigDecimal = BigDecimal("0.05")
-    ) = FixedRateBasicSalesTaxCalculator(
+    ) = FixedRateSalesTaxCalculator(
                     taxRate = taxRate,
-                    roundingOperation = NearestStepRoundingOperation(step = roundingStep)
+                    roundingOperation = NearestNextStepRoundingOperation(step = roundingStep)
             )
 }

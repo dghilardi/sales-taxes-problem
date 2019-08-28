@@ -27,9 +27,9 @@
 
 package org.ghilardi.salestaxesproblem.factory.action
 
-import org.ghilardi.salestaxesproblem.action.impl.FixedRateBasicSalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.impl.NearestStepRoundingOperation
-import org.ghilardi.salestaxesproblem.action.impl.TaxExemptBasicSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.FixedRateSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.NearestNextStepRoundingOperation
+import org.ghilardi.salestaxesproblem.action.impl.TaxExemptSalesTaxCalculator
 import org.ghilardi.salestaxesproblem.model.BasketItemType
 import org.ghilardi.salestaxesproblem.model.STPConfiguration
 
@@ -37,7 +37,7 @@ class BasicSalesTaxCalculatorFactory(
         private val stpConfiguration: STPConfiguration
 ) {
     fun createBasicSalesTaxCalculator(itemType: BasketItemType) = when (itemType) {
-        BasketItemType.FOOD, BasketItemType.MEDICAL_PRODUCT, BasketItemType.BOOK -> TaxExemptBasicSalesTaxCalculator()
-        BasketItemType.OTHER -> FixedRateBasicSalesTaxCalculator(stpConfiguration.basicSalesTaxRate, NearestStepRoundingOperation(stpConfiguration.roundingStep))
+        BasketItemType.FOOD, BasketItemType.MEDICAL_PRODUCT, BasketItemType.BOOK -> TaxExemptSalesTaxCalculator()
+        BasketItemType.OTHER -> FixedRateSalesTaxCalculator(stpConfiguration.basicSalesTaxRate, NearestNextStepRoundingOperation(stpConfiguration.roundingStep))
     }
 }

@@ -27,8 +27,8 @@
 
 package org.ghilardi.salestaxesproblem.factory.action
 
-import org.ghilardi.salestaxesproblem.action.impl.FixedRateImportDutySalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.impl.TaxExemptImportDutySalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.FixedRateSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.TaxExemptSalesTaxCalculator
 import org.ghilardi.salestaxesproblem.model.BasketItemImportState
 import org.ghilardi.salestaxesproblem.model.STPConfiguration
 import org.hamcrest.CoreMatchers
@@ -41,14 +41,14 @@ internal class ImportDutySalesTaxCalculatorFactoryTest {
     fun `verify creation of ImportDutySalesTaxCalculator for imported products`() {
         val factory = givenImportDutySalesTaxCalculatorFactory()
         val calculator = factory.createImportDutySalesTaxCalculator(BasketItemImportState.IMPORTED)
-        Assert.assertThat(calculator, CoreMatchers.instanceOf(FixedRateImportDutySalesTaxCalculator::class.java))
+        Assert.assertThat(calculator, CoreMatchers.instanceOf(FixedRateSalesTaxCalculator::class.java))
     }
 
     @Test
     fun `verify creation of ImportDutySalesTaxCalculator for type non imported products`() {
         val factory = givenImportDutySalesTaxCalculatorFactory()
         val calculator = factory.createImportDutySalesTaxCalculator(BasketItemImportState.NOT_IMPORTED)
-        Assert.assertThat(calculator, CoreMatchers.instanceOf(TaxExemptImportDutySalesTaxCalculator::class.java))
+        Assert.assertThat(calculator, CoreMatchers.instanceOf(TaxExemptSalesTaxCalculator::class.java))
     }
 
     private fun givenImportDutySalesTaxCalculatorFactory(): ImportDutySalesTaxCalculatorFactory {

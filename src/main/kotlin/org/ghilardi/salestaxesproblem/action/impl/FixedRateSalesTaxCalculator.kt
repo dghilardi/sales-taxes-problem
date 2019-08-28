@@ -27,21 +27,21 @@
 
 package org.ghilardi.salestaxesproblem.action.impl
 
-import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.SalesTaxCalculator
 import java.math.BigDecimal
 
-class FixedRateBasicSalesTaxCalculator (
+class FixedRateSalesTaxCalculator (
         private val taxRate: BigDecimal,
-        private val roundingOperation: NearestStepRoundingOperation
-): BasicSalesTaxCalculator {
+        private val roundingOperation: NearestNextStepRoundingOperation
+): SalesTaxCalculator {
 
     init {
-        require(taxRate >= BigDecimal.ZERO) { "Basic sales tax rate must be a non negative number. Given value was $taxRate" }
+        require(taxRate >= BigDecimal.ZERO) { "Sales tax rate must be a non negative number. Given value was $taxRate" }
     }
 
-    override fun computeBasicSalesTaxFromShelfPrice(shelfPrice: BigDecimal): BigDecimal {
-        require(shelfPrice >= BigDecimal.ZERO) { "Shelf price must be a non negative number. Given value was $shelfPrice" }
-        val taxes = shelfPrice * taxRate / (BigDecimal(100) + taxRate)
+    override fun computeSalesTaxFromNetPrice(netPrice: BigDecimal): BigDecimal {
+        require(netPrice >= BigDecimal.ZERO) { "Net price must be a non negative number. Given value was $netPrice" }
+        val taxes = netPrice * taxRate / BigDecimal(100)
         return roundingOperation.round(taxes)
     }
 }

@@ -27,8 +27,8 @@
 
 package org.ghilardi.salestaxesproblem.factory.action
 
-import org.ghilardi.salestaxesproblem.action.impl.FixedRateBasicSalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.impl.TaxExemptBasicSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.FixedRateSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.TaxExemptSalesTaxCalculator
 import org.ghilardi.salestaxesproblem.model.BasketItemType
 import org.ghilardi.salestaxesproblem.model.STPConfiguration
 import org.hamcrest.CoreMatchers.instanceOf
@@ -36,33 +36,33 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 import java.math.BigDecimal
 
-internal class BasicSalesTaxCalculatorFactoryTest {
+internal class SalesTaxCalculatorFactoryTest {
     @Test
     fun `verify creation of BasicSalesTaxCalculator for type 'other'`() {
         val factory = givenBasketItemTypeFromConfigurationExtractor()
         val calculator = factory.createBasicSalesTaxCalculator(BasketItemType.OTHER)
-        assertThat(calculator, instanceOf(FixedRateBasicSalesTaxCalculator::class.java))
+        assertThat(calculator, instanceOf(FixedRateSalesTaxCalculator::class.java))
     }
 
     @Test
     fun `verify creation of BasicSalesTaxCalculator for type 'food'`() {
         val factory = givenBasketItemTypeFromConfigurationExtractor()
         val calculator = factory.createBasicSalesTaxCalculator(BasketItemType.FOOD)
-        assertThat(calculator, instanceOf(TaxExemptBasicSalesTaxCalculator::class.java))
+        assertThat(calculator, instanceOf(TaxExemptSalesTaxCalculator::class.java))
     }
 
     @Test
     fun `verify creation of BasicSalesTaxCalculator for type 'book'`() {
         val factory = givenBasketItemTypeFromConfigurationExtractor()
         val calculator = factory.createBasicSalesTaxCalculator(BasketItemType.BOOK)
-        assertThat(calculator, instanceOf(TaxExemptBasicSalesTaxCalculator::class.java))
+        assertThat(calculator, instanceOf(TaxExemptSalesTaxCalculator::class.java))
     }
 
     @Test
     fun `verify creation of BasicSalesTaxCalculator for type 'medical product'`() {
         val factory = givenBasketItemTypeFromConfigurationExtractor()
         val calculator = factory.createBasicSalesTaxCalculator(BasketItemType.MEDICAL_PRODUCT)
-        assertThat(calculator, instanceOf(TaxExemptBasicSalesTaxCalculator::class.java))
+        assertThat(calculator, instanceOf(TaxExemptSalesTaxCalculator::class.java))
     }
 
     private fun givenBasketItemTypeFromConfigurationExtractor(): BasicSalesTaxCalculatorFactory {

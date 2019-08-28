@@ -25,10 +25,33 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.ghilardi.salestaxesproblem.action
+package org.ghilardi.salestaxesproblem.action.impl
 
+import org.junit.Test
 import java.math.BigDecimal
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
-interface BasicSalesTaxCalculator {
-    fun computeBasicSalesTaxFromShelfPrice(shelfPrice: BigDecimal): BigDecimal
+class TaxExemptSalesTaxCalculatorTests {
+    @Test
+    fun `Given positive netPrice verify tax computation to be 0`() {
+        val basicTaxCalculator = TaxExemptSalesTaxCalculator()
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("100.00"))
+        assertEquals(BigDecimal("0.00"), taxes)
+    }
+
+    @Test
+    fun `Given zero netPrice verify tax computation to be 0`() {
+        val basicTaxCalculator = TaxExemptSalesTaxCalculator()
+        val taxes = basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("0.00"))
+        assertEquals(BigDecimal("0.00"), taxes)
+    }
+
+    @Test
+    fun `Given negative netPrice basic sales tax computation should fail`() {
+        val basicTaxCalculator = TaxExemptSalesTaxCalculator()
+        assertFailsWith(IllegalArgumentException::class) {
+            basicTaxCalculator.computeSalesTaxFromNetPrice(netPrice = BigDecimal("-10.00"))
+        }
+    }
 }
