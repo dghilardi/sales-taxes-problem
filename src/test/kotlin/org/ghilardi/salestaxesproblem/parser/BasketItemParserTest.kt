@@ -88,7 +88,7 @@ internal class BasketItemParserTest {
 
         assertEquals(1, data.count)
         assertEquals("packet of headache pills", data.name)
-        assertEquals(BigDecimal("9.75"), data.shelfPrice)
+        assertEquals(BigDecimal("9.75"), data.netPrice)
     }
 
     @Test
@@ -98,7 +98,7 @@ internal class BasketItemParserTest {
 
         assertEquals(1, data.count)
         assertEquals("bottle of perfume", data.name)
-        assertEquals(BigDecimal("47.50"), data.shelfPrice)
+        assertEquals(BigDecimal("47.50"), data.netPrice)
     }
 
     @Test
@@ -108,7 +108,7 @@ internal class BasketItemParserTest {
 
         assertEquals(3, data.count)
         assertEquals("box of chocolates", data.name)
-        assertEquals(BigDecimal("11.25"), data.shelfPrice)
+        assertEquals(BigDecimal("11.25"), data.netPrice)
     }
 
     private fun givenBasketItemParser(

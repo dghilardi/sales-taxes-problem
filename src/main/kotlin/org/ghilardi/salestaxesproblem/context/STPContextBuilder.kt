@@ -27,7 +27,6 @@
 
 package org.ghilardi.salestaxesproblem.context
 
-import org.ghilardi.salestaxesproblem.action.BasketItemTypeExtractor
 import org.ghilardi.salestaxesproblem.action.impl.BasketItemTypeFromConfigurationExtractor
 import org.ghilardi.salestaxesproblem.command.ProduceReceiptCommand
 import org.ghilardi.salestaxesproblem.factory.action.BasicSalesTaxCalculatorFactory
@@ -53,7 +52,7 @@ class STPContextBuilder {
                         "chocolate bar" to BasketItemType.FOOD,
                         "bottle of perfume" to BasketItemType.OTHER,
                         "packet of headache pills" to BasketItemType.MEDICAL_PRODUCT,
-                        "box of imported chocolates" to BasketItemType.FOOD
+                        "box of chocolates" to BasketItemType.FOOD
                 )
         )
 

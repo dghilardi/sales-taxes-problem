@@ -27,28 +27,28 @@
 
 package org.ghilardi.salestaxesproblem.entity
 
-import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.ImportDutySalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.SalesTaxCalculator
 import org.ghilardi.salestaxesproblem.action.ItemReceiptSerializer
 import java.math.BigDecimal
 
 class ShoppingBasketItem(
         private val name: String,
         private val count: Int,
-        private val shelfPrice: BigDecimal,
-        private val basicSalesTaxCalculator: BasicSalesTaxCalculator,
-        private val importDutySalesTaxCalculator: ImportDutySalesTaxCalculator,
+        private val netPrice: BigDecimal,
+        private val basicSalesTaxCalculator: SalesTaxCalculator,
+        private val importDutySalesTaxCalculator: SalesTaxCalculator,
         private val itemReceiptSerializer: ItemReceiptSerializer
 ) {
     fun computeFullTaxes(): BigDecimal {
-        val totShelfPrice = shelfPrice * BigDecimal(count)
-        return basicSalesTaxCalculator.computeBasicSalesTaxFromShelfPrice(totShelfPrice) +
-                importDutySalesTaxCalculator.computeImportDutySalesTaxFromShelfPrice(totShelfPrice)
+        return BigDecimal(count) * (
+                basicSalesTaxCalculator.computeSalesTaxFromNetPrice(netPrice) +
+                importDutySalesTaxCalculator.computeSalesTaxFromNetPrice(netPrice)
+                )
     }
 
     fun computeFullPrice(): BigDecimal {
-        val totShelfPrice = shelfPrice * BigDecimal(count)
-        return totShelfPrice + importDutySalesTaxCalculator.computeImportDutySalesTaxFromShelfPrice(totShelfPrice)
+        val totNetPrice = netPrice * BigDecimal(count)
+        return totNetPrice + computeFullTaxes()
     }
 
     fun produceReceiptEntry(): String {

@@ -31,45 +31,45 @@ import org.junit.Test
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
-class NearestStepRoundingOperationTests {
+class NearestNextStepRoundingOperationTests {
     @Test
-    fun `Test positive rounding up with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+    fun `Test positive rounding up after mid with 0,05 scale`() {
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("5.344"))
         assertEquals(BigDecimal("5.35"), rounded)
     }
 
     @Test
-    fun `Test positive rounding down with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+    fun `Test positive rounding up before mid with 0,05 scale`() {
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("3.121"))
-        assertEquals(BigDecimal("3.10"), rounded)
+        assertEquals(BigDecimal("3.15"), rounded)
     }
 
     @Test
-    fun `Test negative rounding down with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+    fun `Test negative rounding up after mid with 0,05 scale`() {
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("-5.344"))
         assertEquals(BigDecimal("-5.35"), rounded)
     }
 
     @Test
-    fun `Test negative rounding up with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+    fun `Test negative rounding up before mid 0,05 scale`() {
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("-3.121"))
-        assertEquals(BigDecimal("-3.10"), rounded)
+        assertEquals(BigDecimal("-3.15"), rounded)
     }
 
     @Test
     fun `Test rounding exact with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("5.550"))
         assertEquals(BigDecimal("5.55"), rounded)
     }
 
     @Test
     fun `Test negative rounding exact with 0,05 scale`() {
-        val roundingOperation = NearestStepRoundingOperation(BigDecimal("0.05"))
+        val roundingOperation = NearestNextStepRoundingOperation(BigDecimal("0.05"))
         val rounded = roundingOperation.round(BigDecimal("-3.150"))
         assertEquals(BigDecimal("-3.15"), rounded)
     }

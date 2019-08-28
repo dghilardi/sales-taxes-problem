@@ -34,5 +34,5 @@ data class ShoppingBasketItemData(
         val importState: BasketItemImportState,
         val type: BasketItemType,
         val count: Int,
-        val shelfPrice: BigDecimal
+        val netPrice: BigDecimal
 )

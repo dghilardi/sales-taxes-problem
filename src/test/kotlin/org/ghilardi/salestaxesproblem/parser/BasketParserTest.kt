@@ -66,7 +66,7 @@ internal class BasketParserTest {
                     importState = BasketItemImportState.IMPORTED,
                     type = BasketItemType.OTHER,
                     count = 1,
-                    shelfPrice = BigDecimal("10.0")
+                    netPrice = BigDecimal("10.0")
             )
         }
 

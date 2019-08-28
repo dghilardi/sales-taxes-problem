@@ -34,15 +34,15 @@ import org.ghilardi.salestaxesproblem.factory.action.ItemReceiptSerializerFactor
 import org.ghilardi.salestaxesproblem.model.ShoppingBasketItemData
 
 class ShoppingBasketItemEntityFactory(
-    private val basicSalesTaxCalculatorFactory: BasicSalesTaxCalculatorFactory,
-    private val importDutySalesTaxCalculatorFactory: ImportDutySalesTaxCalculatorFactory,
-    private val itemReceiptSerializerFactory: ItemReceiptSerializerFactory
+        private val basicSalesTaxCalculatorFactory: BasicSalesTaxCalculatorFactory,
+        private val importDutySalesTaxCalculatorFactory: ImportDutySalesTaxCalculatorFactory,
+        private val itemReceiptSerializerFactory: ItemReceiptSerializerFactory
 ) {
     fun createShoppingBasketItem(shoppingBasketItemData: ShoppingBasketItemData) =
             ShoppingBasketItem(
                     name = shoppingBasketItemData.name,
                     count = shoppingBasketItemData.count,
-                    shelfPrice = shoppingBasketItemData.shelfPrice,
+                    netPrice = shoppingBasketItemData.netPrice,
                     basicSalesTaxCalculator = basicSalesTaxCalculatorFactory.createBasicSalesTaxCalculator(shoppingBasketItemData.type),
                     importDutySalesTaxCalculator = importDutySalesTaxCalculatorFactory.createImportDutySalesTaxCalculator(shoppingBasketItemData.importState),
                     itemReceiptSerializer = itemReceiptSerializerFactory.createItemReceiptSerializer(shoppingBasketItemData.importState)

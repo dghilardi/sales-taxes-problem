@@ -44,7 +44,7 @@ class BasketItemParser(
     fun parse(entry: String): ShoppingBasketItemData {
 
         val matchResult = BASKET_ITEM_REGEX.find(entry)
-        val (count, fullName, shelfPrice) = matchResult?.destructured
+        val (count, fullName, netPrice) = matchResult?.destructured
                 ?: error("Error during entry deserialization from string: '$entry'")
 
         val productName = formatName(fullName)
@@ -54,7 +54,7 @@ class BasketItemParser(
         return ShoppingBasketItemData(
                 count = count.toInt(),
                 name = productName,
-                shelfPrice = shelfPrice.toBigDecimal(),
+                netPrice = netPrice.toBigDecimal(),
                 type = itemType,
                 importState = importState
                 )

@@ -27,9 +27,9 @@
 
 package org.ghilardi.salestaxesproblem.factory.action
 
-import org.ghilardi.salestaxesproblem.action.impl.FixedRateImportDutySalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.impl.NearestStepRoundingOperation
-import org.ghilardi.salestaxesproblem.action.impl.TaxExemptImportDutySalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.FixedRateSalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.impl.NearestNextStepRoundingOperation
+import org.ghilardi.salestaxesproblem.action.impl.TaxExemptSalesTaxCalculator
 import org.ghilardi.salestaxesproblem.model.BasketItemImportState
 import org.ghilardi.salestaxesproblem.model.STPConfiguration
 
@@ -37,7 +37,7 @@ class ImportDutySalesTaxCalculatorFactory(
         private val stpConfiguration: STPConfiguration
 ) {
     fun createImportDutySalesTaxCalculator(importState: BasketItemImportState) = when (importState) {
-        BasketItemImportState.IMPORTED -> FixedRateImportDutySalesTaxCalculator(stpConfiguration.importDutySalesTaxRate, NearestStepRoundingOperation(stpConfiguration.roundingStep))
-        BasketItemImportState.NOT_IMPORTED -> TaxExemptImportDutySalesTaxCalculator()
+        BasketItemImportState.IMPORTED -> FixedRateSalesTaxCalculator(stpConfiguration.importDutySalesTaxRate, NearestNextStepRoundingOperation(stpConfiguration.roundingStep))
+        BasketItemImportState.NOT_IMPORTED -> TaxExemptSalesTaxCalculator()
     }
 }

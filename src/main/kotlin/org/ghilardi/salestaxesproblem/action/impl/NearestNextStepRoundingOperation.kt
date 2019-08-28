@@ -32,7 +32,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 
-class NearestStepRoundingOperation(
+class NearestNextStepRoundingOperation(
         private val step: BigDecimal
 ): RoundingOperation {
     override fun round(value: BigDecimal): BigDecimal {

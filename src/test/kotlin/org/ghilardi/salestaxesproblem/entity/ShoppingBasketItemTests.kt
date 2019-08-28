@@ -33,8 +33,7 @@ package org.ghilardi.salestaxesproblem.entity
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import org.ghilardi.salestaxesproblem.action.BasicSalesTaxCalculator
-import org.ghilardi.salestaxesproblem.action.ImportDutySalesTaxCalculator
+import org.ghilardi.salestaxesproblem.action.SalesTaxCalculator
 import org.ghilardi.salestaxesproblem.action.ItemReceiptSerializer
 import org.junit.Test
 import java.math.BigDecimal
@@ -44,16 +43,16 @@ class ShoppingBasketItemTests {
 
     @Test
     fun `Given shopping basket item verify full taxes computation`() {
-        val basketItem = givenShoppingBasketItem(count = 3, shelfPrice = BigDecimal("100.0"), basicSalesTax = BigDecimal("30.00"), importDutySalesTax = BigDecimal("15.00"))
+        val basketItem = givenShoppingBasketItem(count = 3, netPrice = BigDecimal("100.0"), basicSalesTax = BigDecimal("10.00"), importDutySalesTax = BigDecimal("5.00"))
         val fullTaxes = basketItem.computeFullTaxes()
         assertEquals(BigDecimal("45.00"), fullTaxes)
     }
 
     @Test
     fun `Given shopping basket item verify full price computation`() {
-        val basketItem = givenShoppingBasketItem(count = 3, shelfPrice = BigDecimal("100.0"), basicSalesTax = BigDecimal("30.00"), importDutySalesTax = BigDecimal("15.00"))
+        val basketItem = givenShoppingBasketItem(count = 3, netPrice = BigDecimal("100.0"), basicSalesTax = BigDecimal("10.00"), importDutySalesTax = BigDecimal("5.00"))
         val fullTaxes = basketItem.computeFullPrice()
-        assertEquals(BigDecimal("315.00"), fullTaxes)
+        assertEquals(BigDecimal("345.00"), fullTaxes)
     }
 
     @Test
@@ -68,18 +67,18 @@ class ShoppingBasketItemTests {
     private fun givenShoppingBasketItem(
             name: String = "",
             count: Int = 1,
-            shelfPrice: BigDecimal = BigDecimal.ZERO,
+            netPrice: BigDecimal = BigDecimal.ZERO,
             basicSalesTax: BigDecimal = BigDecimal.ZERO,
             importDutySalesTax: BigDecimal = BigDecimal.ZERO,
             receiptEntry: String = ""
     ): ShoppingBasketItem {
 
-        val mockedBasicSalesTaxCalculator = mock<BasicSalesTaxCalculator> {
-            on { computeBasicSalesTaxFromShelfPrice(any()) } doReturn basicSalesTax
+        val mockedBasicSalesTaxCalculator = mock<SalesTaxCalculator> {
+            on { computeSalesTaxFromNetPrice(any()) } doReturn basicSalesTax
         }
 
-        val mockedImportDutySalesTaxCalculator = mock<ImportDutySalesTaxCalculator> {
-            on { computeImportDutySalesTaxFromShelfPrice(any()) } doReturn importDutySalesTax
+        val mockedImportDutySalesTaxCalculator = mock<SalesTaxCalculator> {
+            on { computeSalesTaxFromNetPrice(any()) } doReturn importDutySalesTax
         }
 
         val mockedItemReceiptSerializer = mock<ItemReceiptSerializer> {
@@ -89,7 +88,7 @@ class ShoppingBasketItemTests {
         return ShoppingBasketItem(
                 name = name,
                 count = count,
-                shelfPrice = shelfPrice,
+                netPrice = netPrice,
                 basicSalesTaxCalculator = mockedBasicSalesTaxCalculator,
                 importDutySalesTaxCalculator = mockedImportDutySalesTaxCalculator,
                 itemReceiptSerializer = mockedItemReceiptSerializer
